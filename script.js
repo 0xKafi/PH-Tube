@@ -1,6 +1,27 @@
 const categoriesURL = "https://openapi.programming-hero.com/api/phero-tube/categories";
 const videosURL = "https://openapi.programming-hero.com/api/phero-tube/videos"
 
+
+const fetchVideoCategories = () =>{
+    fetch(categoriesURL)
+    .then((response) => response.json())
+    .then((data) => AddCategories(data.categories));
+}
+
+const AddCategories = (categories)=>{
+    categories.forEach(cat =>{
+    const filterSection = document.getElementById("filter");
+     const btnDiv = document.createElement("div");
+    btnDiv.innerHTML = 
+    `
+    <button class="px-3 bg-gray-200  text-gray-900 rounded-sm py-1">${cat.category}</button>
+    `
+
+    filterSection.append(btnDiv);
+    })
+}
+fetchVideoCategories();
+
 const fetchAllVideos = () =>{
     fetch(videosURL)
     .then((response) => response.json())
@@ -10,25 +31,6 @@ fetchAllVideos();
 
 const showVideos = (video) =>{
     video.forEach(video => {
-        const videoCategory = video.category_id;
-        // {
-        //     "category_id": "1003",
-        //     "video_id": "aaae",
-        //     "thumbnail": "https://i.ibb.co/Yc4p5gD/inside-amy.jpg",
-        //     "title": "Inside Amy Schumer",
-        //     "authors": [
-        //     {
-        //     "profile_picture": "https://i.ibb.co/YD2mqH7/amy.jpg",
-        //     "profile_name": "Amy Schumer",
-        //     "verified": ""
-        //     }
-        //     ],
-        //     "others": {
-        //     "views": "3.6K",
-        //     "posted_date": "15147"
-        //     },
-        console.log(video.authors[0].profile_name, 1)
-
         const cardDiv = document.createElement("div");
         cardDiv.innerHTML = 
         `
