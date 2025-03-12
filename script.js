@@ -10,13 +10,13 @@ const fetchVideoCategories = () =>{
 
 const AddCategories = (categories)=>{
     categories.forEach(cat =>{
+    const categoryID = cat.category_id;
     const filterSection = document.getElementById("filter");
      const btnDiv = document.createElement("div");
     btnDiv.innerHTML = 
     `
-    <button class="px-3 bg-gray-200  text-gray-900 rounded-sm py-1">${cat.category}</button>
+    <button id="${categoryID}" onclick = "showVideosByCategory(${categoryID})" class="filter-btn px-3 bg-gray-200  text-gray-900 rounded-sm py-1">${cat.category}</button>
     `
-
     filterSection.append(btnDiv);
     })
 }
@@ -29,7 +29,19 @@ const fetchAllVideos = () =>{
 }
 fetchAllVideos();
 
+const noVideoPage = () =>{
+    const noVideoDiv = document.createElement("div");
+    noVideoDiv.innerHTML = `
+        <div class=" flex items-center justify-center flex-col h-100">
+            <img src="./assets/no-video-icon.png" alt="no-video-icon">
+            <h2 class="font-bold text-2xl mt-5">Opps!!! Sorry, There is no content here</h2>
+        </div>`
+    noVideoDiv.classList.add("col-span-4");
+    document.getElementById("video-section").append(noVideoDiv);
+}
+
 const showVideos = (video) =>{
+    if(video.length == 0) noVideoPage();
     video.forEach(video => {
         const cardDiv = document.createElement("div");
         cardDiv.innerHTML = 
@@ -59,7 +71,32 @@ const showVideos = (video) =>{
         document.getElementById("video-section").append(cardDiv);
     });
 }
+const buttonToggle = (id) =>{
+    const filterBtns = document.querySelectorAll(".filter-btn");
+
+    filterBtns.forEach(btn =>{
+        btn.classList.remove("text-white", "bg-red-500");
+        btn.classList.add("text-gray-900", "bg-gray-200");
+    })
+
+    document.getElementById(id).classList.remove("text-gray-900", "bg-gray-200");
+    document.getElementById(id).classList.add("text-white", "bg-red-500");
+}
 
 document.getElementById("all-btn").addEventListener("click", ()=>{
+    document.getElementById("video-section").innerHTML = "";
+    buttonToggle("all-btn")
     fetchAllVideos();
 })
+
+const showVideosByCategory = (id)=>{
+    document.getElementById("video-section").innerHTML = "";
+    buttonToggle(id)
+    const fetchVideoCategoryID = () =>{
+        const URL = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`
+        fetch(URL)
+        .then((response) => response.json())
+        .then((data) => showVideos(data.category));
+    }
+    fetchVideoCategoryID()
+}
