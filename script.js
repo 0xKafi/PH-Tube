@@ -61,7 +61,7 @@ const showVideos = (video) =>{
                             <h2 class="card-title ml-2 mb-1">${video.title}</h2>
                             <div class="flex items-center justify-start">
                                 <span class="mx-2 text-[#171717B3] mb-1">${video.authors[0].profile_name}</span>
-                                <img class="h-4" src="https://img.icons8.com/?size=100&id=2AuMnRFVB9b1&format=png&color=000000" alt="">
+                                ${video.authors[0].verified == true ? ` <img class="h-4 mb-1" src="https://img.icons8.com/?size=100&id=2AuMnRFVB9b1&format=png&color=000000" alt="">` : ``}
                             </div>
                             <p class="ml-2 text-[#171717B3] mb-1">${video.others.views} views</p>
                         </div>
